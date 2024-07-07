@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 20.0),
             child: Text(
-              'Loading... $_remainingSeconds seconds remaining',
+              'Memuat... $_remainingSeconds detik tersisa',
               style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ),
