@@ -17,7 +17,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(
+          title: const Text(
+        'Mendaftar',
+        style: TextStyle(fontFamily: "Caros"),
+      )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
