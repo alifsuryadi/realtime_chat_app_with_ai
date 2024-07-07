@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>277272108849-ia3qqr8ffni1u54e7ocm5ugn2d962ojc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.277272108849-ia3qqr8ffni1u54e7ocm5ugn2d962ojc</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBcyqV7GN0CB5YfCFjmuev98cQAIWsbO_s</string>
 	<key>GCM_SENDER_ID</key>
@@ -26,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:277272108849:ios:fc67f118bf6b00faa51a10</string>
+	<key>DATABASE_URL</key>
+	<string>https://realtime-chat-9142b-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

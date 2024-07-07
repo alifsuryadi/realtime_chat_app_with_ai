@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
-  String _errorMessage = ''; // To keep track of error message
+  String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +72,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 IconButton(
                   icon:
                       Image.asset("assets/images/icons/google-icon-white.png"),
-                  onPressed: () {
-                    // Handle Google login
+                  onPressed: () async {
+                    bool success = await _authService.signInWithGoogle();
+                    if (success) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Berhasil masuk dengan Google!')),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatScreen()),
+                      );
+                    } else {
+                      setState(() {
+                        _errorMessage = 'Gagal masuk dengan Google!';
+                      });
+                    }
                   },
                 ),
                 IconButton(
@@ -109,7 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            // ..
             const SizedBox(height: 20),
             if (_errorMessage.isNotEmpty)
               Padding(
@@ -160,11 +174,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 } else {
                   setState(() {
-                    _errorMessage = 'Gagal masuk!'; // Update error message
+                    _errorMessage = 'Gagal masuk!';
                   });
                 }
               },
-              // child: const Text('Login'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.only(
                     left: 150, right: 150, top: 10, bottom: 10),
