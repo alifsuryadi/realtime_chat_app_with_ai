@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'login_screen.dart';
+import '../services/auth_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -12,6 +14,22 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> _messages = [];
+  final AuthService _authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Berhasil login!'),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+        ),
+      );
+    });
+  }
 
   Future<void> _sendMessage(String message) async {
     final response = await http.post(
@@ -29,10 +47,60 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  Future<void> _logout() async {
+    await _authService.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove back button
+        title: Container(
+          padding: const EdgeInsets.only(bottom: 10),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Colors.grey,
+                width: 1.0,
+              ),
+            ),
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                "assets/images/amboai-profile.png",
+                height: 40,
+              ),
+              const SizedBox(width: 10),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "AmboAI",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Tanyo apo sajo",
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.red),
+            onPressed: _logout,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
@@ -42,17 +110,20 @@ class _ChatScreenState extends State<ChatScreen> {
                 final message = _messages[index];
                 bool isUser = message['role'] == 'user';
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: isUser
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: isUser ? Colors.blueAccent : Colors.grey[300],
+                          color: isUser
+                              ? const Color(0xFF24786D)
+                              : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -76,12 +147,18 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      labelText: 'Type your message',
+                      labelText: 'Ketik yang nio di tanyo',
+                      labelStyle: TextStyle(
+                          fontStyle: FontStyle.italic, color: Colors.grey),
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.send),
+                  icon: const Icon(
+                    Icons.send,
+                    color: Color(0xFF24786D),
+                    size: 40,
+                  ),
                   onPressed: () {
                     if (_controller.text.isNotEmpty) {
                       _sendMessage(_controller.text);
