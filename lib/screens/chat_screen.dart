@@ -16,6 +16,21 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Map<String, String>> _messages = [];
   final AuthService _authService = AuthService();
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Berhasil login!'),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+        ),
+      );
+    });
+  }
+
   Future<void> _sendMessage(String message) async {
     final response = await http.post(
       Uri.parse('http://10.0.2.2:8080/generate'), // Ganti dengan IP yang benar
@@ -45,6 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Remove back button
         title: Container(
           padding: const EdgeInsets.only(bottom: 10),
           decoration: const BoxDecoration(
@@ -63,11 +79,11 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               const SizedBox(width: 10),
               const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "AmboAI",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left,
                   ),
                   Text(
                     "Tanyo apo sajo",
@@ -80,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: Colors.red),
+            icon: const Icon(Icons.logout, color: Colors.red),
             onPressed: _logout,
           ),
         ],
@@ -94,17 +110,20 @@ class _ChatScreenState extends State<ChatScreen> {
                 final message = _messages[index];
                 bool isUser = message['role'] == 'user';
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: isUser
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: isUser ? Color(0xFF24786D) : Colors.grey[300],
+                          color: isUser
+                              ? const Color(0xFF24786D)
+                              : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
