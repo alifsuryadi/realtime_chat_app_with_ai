@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:realtime_chat_app_with_ai/screens/login_screen.dart';
 import 'package:realtime_chat_app_with_ai/screens/register_screen.dart';
+// import '../services/auth_service.dart';
 
 class OverviewScreen extends StatelessWidget {
   const OverviewScreen({super.key});
@@ -24,7 +25,7 @@ class OverviewScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
-                      height: 10), // Ensure the image is visible at the top
+                      height: 15), // Ensure the image is visible at the top
                   Image.asset(
                     "assets/images/amboai-white.png",
                     width: 150,
